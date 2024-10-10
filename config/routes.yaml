@@ -1,0 +1,15 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+
+login:
+    path: /login
+    controller: App\Controller\UserController::login
+
+registro:
+    path: /registro
+    controller: App\Controller\UserController::register
+
+streaks:
+    path: /factura
+    controller: App\Controller\InvoiceController::allInvoices

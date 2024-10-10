@@ -1,0 +1,70 @@
+create symfony proyect from 0
+
+Creación de proyexto
+composer create-project symfony/website-skeleton streaks-symfony
+
+re-write apache pack 
+$ composer require symfony/apache-pack
+ 
+
+
+conectar a bd  
+
+desde .env
+
+DATABASE_URL="mysql://root@127.0.0.1:3306/invoicedb"
+
+
+Crear entidades
+
+$ php bin/console doctrine:mapping:import App\\Entity annotation --path=src/Entity
+
+
+Crear métodos Get's and Set´s
+
+
+$ php bin/console make:entity --regenerate App
+
+
+
+Crear Controladores
+
+$ php bin/console make:controller CategoryController
+
+
+
+relaciones con entity manager
+
+step 1 
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+
+strp 2 crear avriable y método donde se guardaran los datos de la relación
+
+Metodo
+
+ /**
+     *  @return Collection|Streak[]
+     * 
+     */
+    public function getStreaks():Collection{
+
+        return $this->streaks;
+
+    }
+
+
+
+VARIABLE
+
+/**
+     * @ORM\OneToMany(targetEntity="App\Entity\Streak", mappedBy="user")
+     */
+    private $streaks;
+
+
+
+
+ 
