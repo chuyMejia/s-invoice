@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+
+{% if edit is defined %}
+
+Edit task!
+
+    {% else %}
+
+Create NEW Streak!
+
+{% endif %}
+
+
+
+{% endblock %}
+
+
+{% block body %}
+
+
+<div class="example-wrapper">
+
+{% if edit is defined %}
+
+Edit task!
+
+    {% else %}
+
+Create NEW Invoice Request
+{% endif %}
+    
+    
+    {# <button>Completado!</button> #}
+
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+       
+   
+</div>
+{% endblock %}

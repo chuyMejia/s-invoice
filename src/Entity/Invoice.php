@@ -32,7 +32,7 @@ class Invoice
     /**
      * @var string|null
      *
-     * @ORM\Column(name="comment", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="comment", type="text", nullable=true)
      */
     private $comment;
 
@@ -72,19 +72,17 @@ class Invoice
     private $imagen;
 
     /**
-     * @var string|null
+     * @var float|null
      *
      * @ORM\Column(name="mount", type="decimal", precision=10, scale=4, nullable=true)
      */
     private $mount;
 
     /**
-     * @var \Users
+     * @var User|null
      *
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
@@ -101,7 +99,6 @@ class Invoice
     public function setNinvoice(?string $ninvoice): static
     {
         $this->ninvoice = $ninvoice;
-
         return $this;
     }
 
@@ -113,7 +110,6 @@ class Invoice
     public function setComment(?string $comment): static
     {
         $this->comment = $comment;
-
         return $this;
     }
 
@@ -125,7 +121,6 @@ class Invoice
     public function setPriority(?string $priority): static
     {
         $this->priority = $priority;
-
         return $this;
     }
 
@@ -137,7 +132,6 @@ class Invoice
     public function setDateInvoice(?\DateTimeInterface $dateInvoice): static
     {
         $this->dateInvoice = $dateInvoice;
-
         return $this;
     }
 
@@ -149,7 +143,6 @@ class Invoice
     public function setCreateAt(?\DateTimeInterface $createAt): static
     {
         $this->createAt = $createAt;
-
         return $this;
     }
 
@@ -161,7 +154,6 @@ class Invoice
     public function setRfc(?string $rfc): static
     {
         $this->rfc = $rfc;
-
         return $this;
     }
 
@@ -173,33 +165,28 @@ class Invoice
     public function setImagen(?string $imagen): static
     {
         $this->imagen = $imagen;
-
         return $this;
     }
 
-    public function getMount(): ?string
+    public function getMount(): ?float
     {
         return $this->mount;
     }
 
-    public function setMount(?string $mount): static
+    public function setMount(?float $mount): static
     {
         $this->mount = $mount;
-
         return $this;
     }
 
-    public function getUser(): ?Users
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?Users $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
-
         return $this;
     }
-
-
 }

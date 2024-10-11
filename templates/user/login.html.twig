@@ -15,7 +15,14 @@
     <div>
    {% endif %}
 
- 
+{% if app.user %}
+    <div>
+        {{ dump(app.user) }}
+    </div>
+{% else %}
+    <div>No hay usuario autenticado.</div>
+{% endif %}
+
     
     <form action="{{ path('login') }}" method="POST">
     <label for="username">Email</label>

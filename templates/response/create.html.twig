@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear Respuesta{% endblock %}
+
+{% block body %}
+    <h1>Crear Respuesta</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.pdfFilename) }}
+    {{ form_row(form.xmlFilename) }}
+    {{ form_row(form.uuid) }} {# Aquí está el campo uuid #}
+    {{ form_row(form.submit) }}
+{{ form_end(form) }}
+
+
+    <a href="{{ path('index') }}">Volver a la lista de facturas</a>
+{% endblock %}

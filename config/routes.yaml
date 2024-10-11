@@ -13,3 +13,21 @@ registro:
 streaks:
     path: /factura
     controller: App\Controller\InvoiceController::allInvoices
+
+streak_creation:
+  path: /new-invoice
+  controller: App\Controller\InvoiceController::creation
+
+
+index:
+    path: /
+    controller: App\Controller\InvoiceController::myInvoices
+
+logout:
+    path: /logout
+
+
+
+invoice_response:
+  path: /invoice/{id}
+  controller: App\Controller\ResponseController::create
