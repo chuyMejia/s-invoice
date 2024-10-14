@@ -18,17 +18,33 @@ class ResponseType extends AbstractType
             ->add('pdfFilename', FileType::class, [
                 'label' => 'Archivo PDF',
                 'required' => true,
+                'attr' => [
+                    'class' => 'form-control mb-3',
+                    'placeholder' => 'Ingresa el número de factura',
+                    'maxlength' => 10,
+                ],
             ])
             ->add('xmlFilename', FileType::class, [
                 'label' => 'Archivo XML',
                 'required' => true,
+                'attr' => [
+                    'class' => 'form-control mb-3',
+                    'placeholder' => 'Ingresa el número de factura',
+                    'maxlength' => 10,
+                ],
             ])
             ->add('uuid', TextType::class, [ // Cambiado a 'uuid'
                 'label' => 'UUID',
                 'required' => false,
+                'attr' => [
+                    'class' => 'form-control mb-3',
+                    'placeholder' => 'Ingresa el número de factura',
+                    'maxlength' => 10,
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Guardar',
+                'attr' => ['class' => 'btn btn-primary'],
             ]);
     }
 

@@ -27,7 +27,19 @@ logout:
     path: /logout
 
 
-
 invoice_response:
   path: /invoice/{id}
   controller: App\Controller\ResponseController::create
+
+
+invoices:
+    path: /invoices
+    controller: App\Controller\InvoiceController::Allinvoices
+
+Users:
+    path: /users
+    controller: App\Controller\UserController::AllUsers
+
+Users_Detail:
+    path: /users/{userid}
+    controller: App\Controller\UserController::DetailUser

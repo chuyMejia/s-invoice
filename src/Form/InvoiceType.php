@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType; // Agrega esta línea
 use Symfony\Component\Form\Extension\Core\Type\NumberType; // Importa NumberType
 
 class InvoiceType extends AbstractType
@@ -16,37 +17,65 @@ class InvoiceType extends AbstractType
     {
         $builder
             ->add('ninvoice', TextType::class, [
-                'label' => 'ninvoice'
+                'label' => 'Número de Factura',
+                'attr' => [
+                    'class' => 'form-control mb-3',
+                    'placeholder' => 'Ingresa el número de factura',
+                    'maxlength' => 10,
+                ],
             ])
             ->add('rfc', TextType::class, [
-                'label' => 'rfc'
+                'label' => 'RFC',
+                'attr' => [
+                    'class' => 'form-control mb-3',
+                    'placeholder' => 'Ingresa el RFC',
+                    'maxlength' => 13, // Ajusta según sea necesario
+                ],
             ])
             ->add('comment', TextareaType::class, [
-                'label' => 'comment'
+                'label' => 'Comentario',
+                'attr' => [
+                    'class' => 'form-control mb-3',
+                    'placeholder' => 'Escribe un comentario',
+                ],
             ])
-            ->add('priority', ChoiceType::class, [
-                'label' => 'status',
-                'choices'=> [
-                    'Alta' => 'high',
-                    'Medio' => 'medium',
-                    'Baja' => 'low',
-                ]
-            ])
-            ->add('mount', NumberType::class, [ // Agregando el campo mount
+            // ->add('priority', ChoiceType::class, [
+            //     'label' => 'Status',
+            //     'attr' => [
+            //         'class' => 'form-control mb-3',
+            //     ],
+            //     'choices' => [
+            //         '0' => 0,
+                    
+            //     ],
+            // ])
+            ->add('mount', TextType::class, [
                 'label' => 'Monto',
-                'scale' => 2, // Número de decimales
-                'html5' => true, // Habilita el input de tipo number
-                'required' => false, // Si deseas que sea opcional
-            ])
-            ->add('dateInvoice', DateTimeType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control mb-3',
+                    'placeholder' => 'Ingresa el monto',
+                ],
+                'constraints' => [
+                    new \Symfony\Component\Validator\Constraints\Regex([
+                        'pattern' => '/^\d+(\.\d{1,2})?$/', // Acepta solo números y hasta dos decimales
+                        'message' => 'Por favor, ingresa un monto válido (ejemplo: 20.20).',
+                    ]),
+                ],
+            ])            
+            ->add('dateInvoice', DateType::class, [
                 'label' => 'Fecha de Factura',
                 'widget' => 'single_text', // Usar un solo campo de texto
-                'html5' => true, // Habilitar el input de tipo datetime-local
-                'input' => 'datetime', // Tipo de entrada esperado
-                // Eliminar la opción 'format'
+                'html5' => true, // Habilitar el input de tipo date
+                'attr' => [
+                    'class' => 'form-control mb-3', // Clases de Bootstrap para estilo
+                    'placeholder' => 'Selecciona la fecha', // Texto de ayuda
+                ],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Guardar'
+                'label' => 'Guardar',
+                'attr' => ['class' => 'btn btn-primary w-100'], // Clase para que ocupe el 100%
             ]);
+            
     }
 }

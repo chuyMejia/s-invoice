@@ -18,12 +18,12 @@ class Response
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="pdfFilename", type="string", length=255)
      */
     private $pdfFilename;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="xmlFilename", type="string", length=255)
      */
     private $xmlFilename;
 
@@ -33,12 +33,13 @@ class Response
     private $uuid;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Invoice")
+     * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="responses")
      * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id", nullable=false)
      */
     private $invoice;
 
     // Getters and Setters
+
     public function getId(): ?int
     {
         return $this->id;

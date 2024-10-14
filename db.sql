@@ -45,3 +45,68 @@ INSERT INTO invoice VALUES(NULL,3,'FQ1557067','Prueba','alta',CURTIME(),CURTIME(
 
 
 
+CREATE TABLE IF NOT EXISTS response (
+    id INT AUTO_INCREMENT NOT NULL,
+    pdf_filename VARCHAR(255) NOT NULL,
+    xml_filename VARCHAR(255) NOT NULL,
+    uuid VARCHAR(40),
+    invoice_id INT NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_response_invoice FOREIGN KEY (invoice_id) REFERENCES invoice(id)
+) ENGINE=InnoDB;
+
+
+
+
+
+-----------------------se quedo asi 
+CREATE TABLE response (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pdfFilename VARCHAR(255) NOT NULL,
+    xmlFilename VARCHAR(255) NOT NULL,
+    uuid VARCHAR(40) DEFAULT NULL,
+    invoice_id INT NOT NULL,
+    FOREIGN KEY (invoice_id) REFERENCES invoice(id)
+);
+
+
+
+
+
+
+
+--todas
+select (*)
+FROM invoice i
+ join response r
+ON r.invoice_id = i.id
+where i.user_id = 15
+--completas
+select count(*)
+FROM invoice i
+ join response r
+ON r.invoice_id = i.id
+where i.user_id = 15
+
+
+--fatantes
+select count(*)
+FROM response r
+RIGHT OUTER join invoice i
+ON r.invoice_id = i.id
+where i.user_id = 15  and r.id is null
+
+
+SELECT 
+    COUNT(i.id) AS total_invoices,
+    SUM(CASE WHEN r.id IS NOT NULL THEN 1 ELSE 0 END) AS completas,
+    SUM(CASE WHEN r.id IS NULL THEN 1 ELSE 0 END) AS faltantes
+FROM 
+    invoice i
+LEFT JOIN 
+    response r ON r.invoice_id = i.id
+WHERE 
+    i.user_id = 15;
+
+
+

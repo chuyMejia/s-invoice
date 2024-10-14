@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello InvoiceController!{% endblock %}
+{% block title %}Hello StreakController!{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+{% endblock %}
 
 {% block body %}
 <style>
@@ -8,13 +12,120 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{# {{ dump(invoices) }} #}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/s-factura/src/Controller/InvoiceController.php'|file_link(0) }}">src/Controller/InvoiceController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/s-factura/templates/invoice/index.html.twig'|file_link(0) }}">templates/invoice/index.html.twig</a></code></li>
-    </ul>
-</div>
+<table class="table table-striped" id="invoiceTable">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Correo</th>
+            <th>Número de Factura</th>
+            <th>Comentario</th>
+            <th>Status</th>
+            <th>Fecha de Factura</th>
+            <th>Fecha de Creación</th>
+            <th>RFC</th>
+            <th>Monto</th>
+            <th>UUID</th>
+            <th>PDF</th>
+            <th>XML</th>
+            <th>Upload</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for invoice in invoices %}
+
+        {% if invoice.response %}
+            <tr>
+            {% else %}
+            <tr style="background:#ffc0c0">
+        {% endif %}
+
+                <td>{{ invoice.id }}</td>
+
+                <td>
+                 <a href="{{ path('Users_Detail', {'userid': invoice.user.id}) }}">
+                {{ invoice.user.email }}
+                </a>
+                </td>
+
+                <td>{{ invoice.ninvoice }}</td>
+                <td>{{ invoice.comment }}</td>
+                <td>
+                    {% if invoice.response %}
+                      
+
+                         <svg style="color: green;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                        </svg>
+                    {% else %}
+                          <svg style="color: black;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                        </svg>
+                       
+                    {% endif %}
+                </td>
+                <td>{{ invoice.dateInvoice ? invoice.dateInvoice|date('Y-m-d') : '' }}</td>
+                <td>{{ invoice.createAt ? invoice.createAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ invoice.rfc }}</td>
+                <td>{{ invoice.mount }}</td>
+                <td>{{ invoice.response ? invoice.response.uuid : '' }}</td>
+
+                {% if invoice.response %}
+
+                <td>
+                    <a href="{{ uploads(invoice.response ? invoice.response.pdfFilename : '', 'pdf') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-pdf" viewBox="0 0 16 16">
+                            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                        </svg>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ uploads(invoice.response ? invoice.response.xmlFilename : '', 'xml') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-xml" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM3.527 11.85h-.893l-.823 1.439h-.036L.943 11.85H.012l1.227 1.983L0 15.85h.861l.853-1.415h.035l.85 1.415h.908l-1.254-1.992zm.954 3.999v-2.66h.038l.952 2.159h.516l.946-2.16h.038v2.661h.715V11.85h-.8l-1.14 2.596h-.025L4.58 11.85h-.806v3.999zm4.71-.674h1.696v.674H8.4V11.85h.791z"/>
+                        </svg>
+                    </a>
+                </td>
+                <td>
+                {% else %}
+                 <td>
+                                        <svg style="color:#a93939;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard2-x-fill" viewBox="0 0 16 16">
+                        <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5"/>
+                        <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585q.084.236.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5q.001-.264.085-.5M8 8.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 9l1.147 1.146a.5.5 0 0 1-.708.708L8 9.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 9 6.146 7.854a.5.5 0 1 1 .708-.708z"/>
+                        </svg>
+                                        </td>
+                                        <td>
+                                        <svg style="color:#a93939;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard2-x-fill" viewBox="0 0 16 16">
+                        <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5"/>
+                        <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585q.084.236.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5q.001-.264.085-.5M8 8.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 9l1.147 1.146a.5.5 0 0 1-.708.708L8 9.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 9 6.146 7.854a.5.5 0 1 1 .708-.708z"/>
+                        </svg>
+                </td>
+                <td>
+                {% endif %}
+
+                    {% if invoice.response %}
+                    {% else %}
+                        <a href="{{ path('invoice_response', {'id': invoice.id}) }}">
+                            <svg style="color:black" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-upload-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 0a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 4.095 0 5.555 0 7.318 0 9.366 1.708 11 3.781 11H7.5V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11h4.188C14.502 11 16 9.57 16 7.773c0-1.636-1.242-2.969-2.834-3.194C12.923 1.999 10.69 0 8 0m-.5 14.5V11h1v3.5a.5.5 0 0 1-1 0"/>
+                            </svg>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#invoiceTable').DataTable(); // Inicializa DataTables en tu tabla
+        });
+    </script>
 {% endblock %}

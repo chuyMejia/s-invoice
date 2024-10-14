@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Detalle de Usuario{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header text-center">
+            <h2>Detalles del Usuario</h2>
+        </div>
+        <div class="card-body row">
+            <div class="col-md-6">
+                <h5 class="card-title">{{ user.name|upper }} {{ user.surname|upper }}</h5>
+                <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+                <p class="card-text"><strong>Rol:</strong> {{ user.role }}</p>
+                <p class="card-text"><strong>Creado el:</strong> {{ user.createAt|date('d/m/Y H:i') }}</p>
+                <img src="{{ asset('images/' ~ user.imagen ~ '.png') }}" alt="{{ user.name }}" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
+                
+                <hr>
+                <h5>Detalles de Facturas</h5>
+                <p><strong>Total de Facturas:</strong> {{ invoiceData.total_invoices }}</p>
+                <p><strong>Facturas Completas:</strong> {{ invoiceData.completas }}</p>
+                <p><strong>Facturas Faltantes:</strong> {{ invoiceData.faltantes }}</p>
+            </div>
+            <div class="col-md-6">
+                <canvas id="invoiceChart" style="max-width: 400px; max-height: 400px;"></canvas>
+            </div>
+        </div>
+        <div class="card-footer text-muted text-center">
+            {% if app.user.role == 'ADMIN' %}
+            <a href="{{ path('invoices') }}" class="btn btn-primary">Volver a la lista de Facturas</a>
+            {% else %}
+            <a href="{{ path('index') }}" class="btn btn-primary">Volver a la lista de Facturas</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('invoiceChart').getContext('2d');
+    const invoiceChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Completas', 'Faltantes'],
+            datasets: [{
+                label: 'Estado de las Facturas',
+                data: [{{ invoiceData.completas }}, {{ invoiceData.faltantes }}],
+                backgroundColor: ['#36A2EB', '#FF6384'],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Distribución de Facturas'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -21,6 +21,10 @@ body{
 }
 
 
+
+
+
+
 .header a:hover{
   text-decoration: none;
   color: rgb(234, 219, 219);
@@ -323,6 +327,8 @@ table td{
     left: 10%;
   }
 
+
+
 /* 
 estilos de grid layout reponsive
 */
@@ -397,3 +403,4 @@ body { padding: 1rem; }
     margin-top: 4%;
     min-width: 90%;
 }
+

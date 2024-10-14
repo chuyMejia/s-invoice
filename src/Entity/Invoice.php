@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -85,6 +84,13 @@ class Invoice
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
+
+    /**
+     * @var Response|null
+     *
+     * @ORM\OneToOne(targetEntity="Response", mappedBy="invoice", cascade={"persist", "remove"})
+     */
+    private $response;
 
     public function getId(): ?int
     {
@@ -187,6 +193,23 @@ class Invoice
     public function setUser(?User $user): static
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function getResponse(): ?Response
+    {
+        return $this->response;
+    }
+
+    public function setResponse(?Response $response): static
+    {
+        $this->response = $response;
+
+        // Asegúrate de que la relación esté sincronizada
+        if ($response !== null && $response->getInvoice() !== $this) {
+            $response->setInvoice($this);
+        }
+
         return $this;
     }
 }
