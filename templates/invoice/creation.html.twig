@@ -29,7 +29,7 @@
     {% for message in app.flashes('error') %}
         <div class="alert alert-danger">
             {{ message }}
-            <a href="www.google.com">Go to detail</a>
+            <a href="{{ path('invoices_detail', {'id': id_fact}) }}">Go to detail</a>
         </div>
     {% endfor %}
 

@@ -36,6 +36,10 @@ invoices:
     path: /invoices
     controller: App\Controller\InvoiceController::Allinvoices
 
+invoices_detail:
+    path: /invoices/{id}
+    controller: App\Controller\InvoiceController::InvoiceDetail
+
 Users:
     path: /users
     controller: App\Controller\UserController::AllUsers

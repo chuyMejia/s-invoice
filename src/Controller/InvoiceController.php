@@ -41,10 +41,23 @@ class InvoiceController extends AbstractController
         
             if ($existingInvoice) {
                 $this->addFlash('error', 'La factura ya existe. Revisa su estatus');
+//id de la factura 
+
+
+/*
+La columna MAINPRODUCTNUMBER de la entidad Product relationships contiene datos incorrectos. Corrija los datos y vuelva a intentar la importación.
+
+
+*/
+                var_dump($existingInvoice->getId());
+
+                $id_fact = $existingInvoice->getId();
+
                 $exist = '1';
                 return $this->render('invoice/creation.html.twig', [
                     'form' => $form->createView(),
                     'exist' => $exist,
+                    'id_fact' => $id_fact
                 ]);
             }
         
@@ -137,5 +150,21 @@ class InvoiceController extends AbstractController
             'invoices' => $invoices,
         ]);
     }
+
+
+    
+    public function InvoiceDetail(Request $request, int $id): Response {
+        // Busca la factura por su ID
+        $invoice = $this->entityManager->getRepository(Invoice::class)->find($id);
+    
+        return $this->render('invoice/detail.html.twig', [
+            'controller_name' => 'InvoiceController',
+            'invoice' => $invoice,
+        ]);
+    }
+
+
+
+
     
 }

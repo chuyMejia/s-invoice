@@ -17,9 +17,9 @@ class AppExtension extends AbstractExtension
     public function uploads($path, $type = 'pdf')
     {
         if ($type === 'xml') {
-            return '/s-factura/public/uploads/xmls/' . $path;
+            return '/s-invoice/public/uploads/xmls/' . $path;
         }
-        return '/s-factura/public/uploads/pdfs/' . $path;
+        return '/s-invoice/public/uploads/pdfs/' . $path;
     }
     
     
